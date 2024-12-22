@@ -1,0 +1,19 @@
+{
+  "name": "the-resume-alchemy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./public/style.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.2",
+    "puppeteer": "^23.11.1"
+  }
+}
