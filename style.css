@@ -648,6 +648,14 @@ video {
   height: 18rem;
 }
 
+.h-80{
+  height: 20rem;
+}
+
+.h-auto{
+  height: auto;
+}
+
 .w-28{
   width: 7rem;
 }
