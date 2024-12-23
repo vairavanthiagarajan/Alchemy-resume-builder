@@ -55,6 +55,44 @@ document.addEventListener("DOMContentLoaded", function () {
         const certifications = document.getElementById('certifications').value;
         const languages = document.getElementById('languages').value;
         const extracurricular = document.getElementById('extra-curricular').value;
+        if (!name || !email || !phone || !city || skills.length < minSkill || !edinstitution || !degree || !edstart || !edend || !edpercentage || !summary || !edinstitution1 || !edstart1 || !edend1 || !edpercentage1) {
+          alert("Please fill out all the required fields before downloading the resume.");
+          return;
+        }
+        if (skills.some(skill => skill === "")) {
+            alert("Please ensure all skill fields are filled.");
+            return;
+        }
+        const experienceSection = (company1 || position1 || exstart1 || exend1 || description1)
+        ? `
+        <section class="experience" style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
+            ${position1 || company1 
+                ? `<h3 style="font-size: 0.9rem; font-weight: 700; color: #111; padding-top: 15px;">${position1 || ""}${position1 && company1 ? ", " : ""}${company1 || ""}</h3>` 
+                : ""}
+            ${exstart1 || exend1 
+                ? `<p style="font-size: 0.875rem; color: #4b5563; font-style: italic">${exstart1 || ""}${exstart1 && exend1 ? " - " : ""}${exend1 || ""}</p>` 
+                : ""}
+            ${description1 
+                ? `<ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151;">
+                      <li>${description1}</li>
+                   </ul>` 
+                : ""}
+        </section>
+        `
+        : "";
+        const additionalInfoSection = languages || certifications || extracurricular
+        ? `
+        <section class="additional-info">
+            <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">ADDITIONAL INFORMATION</h2>
+            <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151; padding-top: 15px;">
+              ${languages ? '<li>Languages Known: ${languages}' : ""}
+              ${certifications ? `<li>Certifications: ${certifications}</li>` : ""}
+              ${extracurricular ? `<li>Extra-Curricular: ${extracurricular}</li>` : ""}
+            </ul>
+        </section>
+        `
+        : "";
         const resumeContent = `
         <!DOCTYPE html>
         <html lang="en">
@@ -85,14 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
               ${skills.map(skill => `<li>${skill}</li>`).join('')}
           </ul>
         </section>
-        <section class="experience" style="margin-bottom: 1.5rem;">
-          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
-          <h3 style="font-size: 0.9rem; font-weight: 700; color: #111; padding-top: 15px;">${position1}, ${company1}</h3>
-          <p style="font-size: 0.875rem; color: #4b5563; font-style: italic">${exstart1} - ${exend1}</p>
-          <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151;">
-            <li>${description1}</li>
-          </ul>
-        </section>
+        ${experienceSection}
         <section class="education" style="margin-bottom: 1.5rem;">
           <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">EDUCATION</h2>
           <p style="padding-top: 15px; font-size: 0.9rem; font-weight: 700; "> ${degree}, ${edinstitution} </p> <p style="font-size: 0.875rem; color: #4b5563; font-style: italic"> (${edstart} - ${edend}) </p>
@@ -100,29 +131,20 @@ document.addEventListener("DOMContentLoaded", function () {
           <br>
           <p style="font-size: 0.9rem; font-weight: 700; ">Higher Secondary, ${edinstitution1} </p> <p style="font-size: 0.875rem; color: #4b5563; font-style: italic"> (${edstart1} - ${edend1}) </p> <p style="font-size: 0.875rem; color: #4b5563;">Percentage: ${edpercentage1}%</p>
         </section>
-        <section class="additional-info">
-          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">ADDITIONAL INFORMATION</h2>
-          <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151; padding-top: 15px;">
-            <li>Languages: ${languages}</li>
-            <li>Certifications: ${certifications}</li>
-            <li>Extra-Curricular: ${extracurricular}</li>
-          </ul>
-        </section>
+        ${additionalInfoSection}
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
         </body>
         </html>
     `;
-        alert('Your download has started');
         const element = document.createElement('div');
         element.innerHTML = resumeContent;
         document.body.appendChild(element);
-
         setTimeout(() => {
             const options = {
             margin: 0.5,
-            filename: 'resume.pdf',
+            filename: 'Resume.pdf',
             image: { type: 'png', quality: 1 },
             html2canvas: { scale: 3 },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
