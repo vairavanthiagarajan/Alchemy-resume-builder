@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </body>
         </html>
     `;
+        alert('Your download has started');
         const element = document.createElement('div');
         element.innerHTML = resumeContent;
         document.body.appendChild(element);
