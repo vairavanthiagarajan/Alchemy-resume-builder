@@ -76,32 +76,32 @@ document.addEventListener("DOMContentLoaded", function () {
           <p style="font-size: 0.875rem; color: #6b7280;">${phone} | ${email} | ${city}</p>
         </div>
         <section style="margin-bottom: 1.5rem;">
-          <h2 style="font-size: 1.25rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937;">SUMMARY</h2>
+          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">SUMMARY</h2>
           <p style="text-align: justify; padding-top: 15px; font-size: 0.875rem; color: #374151;">${summary}</p>
         </section>
         <section class="skills" style="margin-bottom: 1.5rem;">
-          <h2 style="font-size: 1.25rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937;">SKILLS</h2>
+          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">SKILLS</h2>
           <ul style="padding-top: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; font-size: 0.875rem; color: #374151;">
               ${skills.map(skill => `<li>${skill}</li>`).join('')}
           </ul>
         </section>
         <section class="experience" style="margin-bottom: 1.5rem;">
-          <h2 style="font-size: 1.25rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937;">PROFESSIONAL EXPERIENCE</h2>
-          <h3 style="font-size: 1rem; font-weight: 700; color: #111; padding-top: 15px;">${position1}, ${company1}</h3>
-          <p style="font-size: 0.875rem; color: #4b5563;">${exstart1} - ${exend1}</p>
+          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
+          <h3 style="font-size: 0.9rem; font-weight: 700; color: #111; padding-top: 15px;">${position1}, ${company1}</h3>
+          <p style="font-size: 0.875rem; color: #4b5563; font-style: italic">${exstart1} - ${exend1}</p>
           <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151;">
             <li>${description1}</li>
           </ul>
         </section>
         <section class="education" style="margin-bottom: 1.5rem;">
-          <h2 style="font-size: 1.25rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937;">EDUCATION</h2>
-          <p style="padding-top: 15px; font-size: 1rem; font-weight: 700; "> ${degree}, ${edinstitution} </p> <p style="font-size: 0.875rem; color: #4b5563;"> (${edstart} - ${edend}) </p>
+          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">EDUCATION</h2>
+          <p style="padding-top: 15px; font-size: 0.9rem; font-weight: 700; "> ${degree}, ${edinstitution} </p> <p style="font-size: 0.875rem; color: #4b5563; font-style: italic"> (${edstart} - ${edend}) </p>
           <p style="font-size: 0.875rem; color: #4b5563;">Percentage: ${edpercentage}%</p>
           <br>
-          <p style="font-size: 1rem; font-weight: 700; ">Higher Secondary, ${edinstitution1} </p> <p style="font-size: 0.875rem; color: #4b5563;"> (${edstart1} - ${edend1}) </p> <p style="font-size: 0.875rem; color: #4b5563;">Percentage: ${edpercentage1}%</p>
+          <p style="font-size: 0.9rem; font-weight: 700; ">Higher Secondary, ${edinstitution1} </p> <p style="font-size: 0.875rem; color: #4b5563; font-style: italic"> (${edstart1} - ${edend1}) </p> <p style="font-size: 0.875rem; color: #4b5563;">Percentage: ${edpercentage1}%</p>
         </section>
         <section class="additional-info">
-          <h2 style="font-size: 1.25rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937;">ADDITIONAL INFORMATION</h2>
+          <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">ADDITIONAL INFORMATION</h2>
           <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151; padding-top: 15px;">
             <li>Languages: ${languages}</li>
             <li>Certifications: ${certifications}</li>
@@ -122,9 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const options = {
             margin: 0.5,
             filename: 'resume.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            image: { type: 'png', quality: 1 },
+            html2canvas: { scale: 3 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().set(options).from(element).save().finally(() => {
             document.body.removeChild(element);
