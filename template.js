@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const maxSkills = 12;
     const removeSkillButton = document.getElementById('removeSkill');
     const minSkill = 4;
+    const addExp = document.getElementById('addExpButton');
+    const removeExp = document.getElementById('removeExp');
+    const minExp = 1;
+    const maxExp = 2;
     const downloadResume = document.getElementById('downloadResume');
     addSkillButton.addEventListener("click", function (event) {
       event.preventDefault(); 
@@ -30,6 +34,51 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         skillsSection.removeChild(skillsSection.lastChild);
     });
+    addExp.addEventListener("click", function (event) {
+      event.preventDefault();
+      const currentExpCount = document.getElementById('experienceSection').querySelectorAll('input[id^="company"]').length;
+      if (currentExpCount >= maxExp) {
+          alert("You cannot add more than 2 experiences.");
+          return;
+      }
+      const expCount = currentExpCount + 1;
+      const newExp = document.createElement("div");
+      newExp.className = "grid grid-cols-1 md:grid-cols-2 gap-6 pt-5";
+      newExp.innerHTML = `
+      <div class="flex flex-col gap-5">
+          <label for="company${expCount}" class="block text-gray-700 text-sm font-medium font-raleway">Company ${expCount}</label>
+          <input type="text" id="company${expCount}" name="company${expCount}" class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="XYZ Corp.">
+          </div>
+          <div class="flex flex-col gap-5">
+              <label for="position${expCount}" class="block text-gray-700 text-sm font-medium font-raleway">Position</label>
+              <input type="text" id="position${expCount}" name="position${expCount}" class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Software Engineer">
+          </div>
+          <div class="flex flex-col gap-5">
+              <label for="ex-start${expCount}" class="block text-gray-700 text-sm font-medium font-raleway">Start Date</label>
+              <input type="text" id="ex-start${expCount}" name="ex-start${expCount}" class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Jan 2024">
+          </div>
+          <div class="flex flex-col gap-5">
+              <label for="ex-end${expCount}" class="block text-gray-700 text-sm font-medium font-raleway">End Date</label>
+              <input type="text" id="ex-end${expCount}" name="ex-end${expCount}" class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Present">
+          </div>
+          <div class="flex flex-col gap-5 ">
+              <label for="description${expCount}" class="block text-gray-700 text-sm font-medium font-raleway">Description</label>
+              <input type="text" id="description${expCount}" name="description${expCount}" class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Explain your role at the company">
+          </div>
+          <br class="hidden md:block">
+      </div>
+      `;
+      document.getElementById('experienceSection').appendChild(newExp);
+    });
+    removeExp.addEventListener("click", function (event) {
+        event.preventDefault();
+        const currentExpCount = document.getElementById('experienceSection').querySelectorAll('input[id^="company"]').length;
+        if (currentExpCount <= minExp) {
+            alert("You cannot remove less than 1 experience.");
+            return;
+        }
+        document.getElementById('experienceSection').removeChild(document.getElementById('experienceSection').lastChild);
+    });
     downloadResume.addEventListener("click", function (event) {
         event.preventDefault();
         const name = document.getElementById('name').value.toUpperCase();
@@ -37,11 +86,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const phone = document.getElementById('phone').value;
         const city = document.getElementById('city').value;
         const skills = skillsSection ? Array.from(skillsSection.querySelectorAll("input")).map(input => input.value) : [];
-        const company1 = document.getElementById('company1').value;
-        const position1 = document.getElementById('position1').value;
-        const exstart1 = document.getElementById('ex-start1').value;
-        const exend1 = document.getElementById('ex-end1').value;
-        const description1 = document.getElementById('description1').value;
+        const experiences = Array.from(document.querySelectorAll('input[id^="company"]')).map((companyInput, index) => {
+          const position = document.getElementById(`position${index + 1}`)?.value || '';
+          const exStart = document.getElementById(`ex-start${index + 1}`)?.value || '';
+          const exEnd = document.getElementById(`ex-end${index + 1}`)?.value || '';
+          const description = document.getElementById(`description${index + 1}`)?.value || '';
+          return {
+              company: companyInput.value,
+              position: position,
+              start: exStart,
+              end: exEnd,
+              description: description,
+          };
+        });
         const edinstitution = document.getElementById('ed-institution').value;
         const degree = document.getElementById('degree').value;
         const edstart = document.getElementById('ed-start').value;
@@ -55,7 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const certifications = document.getElementById('certifications').value;
         const languages = document.getElementById('languages').value;
         const extracurricular = document.getElementById('extra-curricular').value;
-        if (!name || !email || !phone || !city || skills.length < minSkill || !edinstitution || !degree || !edstart || !edend || !edpercentage || !summary || !edinstitution1 || !edstart1 || !edend1 || !edpercentage1) {
+        const firstExperience = experiences[0] || {};
+        if (!name || !email || !phone || !city || skills.length < minSkill || !firstExperience.company || !firstExperience.position || !edinstitution || !edstart1 || !edend1 || !edpercentage1 || !degree || !edstart || !edend || !edpercentage || !summary || !edinstitution1 || !edstart1 || !edend1 || !edpercentage1) {
           alert("Please fill out all the required fields before downloading the resume.");
           return;
         }
@@ -63,24 +121,12 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Please ensure all skill fields are filled.");
             return;
         }
-        const experienceSection = (company1 || position1 || exstart1 || exend1 || description1)
-        ? `
-        <section class="experience" style="margin-bottom: 1.5rem;">
-            <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
-            ${position1 || company1 
-                ? `<h3 style="font-size: 0.9rem; font-weight: 700; color: #111; padding-top: 15px;">${position1 || ""}${position1 && company1 ? ", " : ""}${company1 || ""}</h3>` 
-                : ""}
-            ${exstart1 || exend1 
-                ? `<p style="font-size: 0.875rem; color: #4b5563; font-style: italic">${exstart1 || ""}${exstart1 && exend1 ? " - " : ""}${exend1 || ""}</p>` 
-                : ""}
-            ${description1 
-                ? `<ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151;">
-                      <li>${description1}</li>
-                   </ul>` 
-                : ""}
-        </section>
-        `
-        : "";
+        const experienceSection = experiences.map(exp => `
+              <h3 style="font-size: 0.9rem; font-weight: 700; color: #111;">${exp.position}</h3> 
+              <p style="font-size: 0.875rem; color: #4b5563; font-style: italic;">${exp.company} | ${exp.start} to ${exp.end} </p>
+              <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151; margin-bottom: 1.5rem;">${exp.description}</ul>   
+          </section>
+        `).join('');
         const additionalInfoSection = languages || certifications || extracurricular
         ? `
         <section class="additional-info">
@@ -123,7 +169,10 @@ document.addEventListener("DOMContentLoaded", function () {
               ${skills.map(skill => `<li>${skill}</li>`).join('')}
           </ul>
         </section>
+        <section class="experience" style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
         ${experienceSection}
+        </section>
         <section class="education" style="margin-bottom: 1.5rem;">
           <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">EDUCATION</h2>
           <p style="padding-top: 15px; font-size: 0.9rem; font-weight: 700; "> ${degree}, ${edinstitution} </p> <p style="font-size: 0.875rem; color: #4b5563; font-style: italic"> (${edstart} - ${edend}) </p>
@@ -137,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
         </body>
         </html>
-    `;
+        `;
         const element = document.createElement('div');
         element.innerHTML = resumeContent;
         document.body.appendChild(element);
