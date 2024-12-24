@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <section class="additional-info">
             <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">ADDITIONAL INFORMATION</h2>
             <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151; padding-top: 15px;">
-              ${languages ? '<li>Languages Known: ${languages}' : ""}
+              ${languages ? `<li>Languages Known: ${languages}</li>` : ""}
               ${certifications ? `<li>Certifications: ${certifications}</li>` : ""}
               ${extracurricular ? `<li>Extra-Curricular: ${extracurricular}</li>` : ""}
             </ul>
