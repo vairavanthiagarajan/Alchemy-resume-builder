@@ -612,6 +612,10 @@ video {
   height: 10rem;
 }
 
+.h-5{
+  height: 1.25rem;
+}
+
 .h-6{
   height: 1.5rem;
 }
@@ -622,10 +626,6 @@ video {
 
 .h-auto{
   height: auto;
-}
-
-.h-5{
-  height: 1.25rem;
 }
 
 .w-28{
@@ -865,10 +865,6 @@ video {
   padding-bottom: 5rem;
 }
 
-.pb-5{
-  padding-bottom: 1.25rem;
-}
-
 .pt-10{
   padding-top: 2.5rem;
 }
@@ -1039,6 +1035,10 @@ video {
     height: 2.5rem;
   }
 
+  .md\:h-7{
+    height: 1.75rem;
+  }
+
   .md\:h-8{
     height: 2rem;
   }
@@ -1049,10 +1049,6 @@ video {
 
   .md\:h-96{
     height: 24rem;
-  }
-
-  .md\:h-7{
-    height: 1.75rem;
   }
 
   .md\:w-32{

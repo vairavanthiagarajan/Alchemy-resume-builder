@@ -122,9 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         const experienceSection = experiences.map(exp => `
-              <h3 style="font-size: 0.9rem; font-weight: 700; color: #111;">${exp.position}</h3> 
+              <h3 style="font-size: 0.9rem; font-weight: 700; color: #111; padding-top: 15px;">${exp.position}</h3> 
               <p style="font-size: 0.875rem; color: #4b5563; font-style: italic;">${exp.company} | ${exp.start} to ${exp.end} </p>
-              <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151; margin-bottom: 1.5rem;">${exp.description}</ul>   
+              <ul style="list-style: disc; margin-left: 1rem; font-size: 0.875rem; color: #374151;">${exp.description}</ul>   
           </section>
         `).join('');
         const additionalInfoSection = languages || certifications || extracurricular
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <link rel="stylesheet" href="style.css">
         </head>
         <body>
-        <div style="max-width: 56rem; margin: auto; background: #fff; padding: 0.5rem; border-radius: 0.5rem; font-family: Arial, sans-serif; color: #1f2937;">
+        <div style="max-width: 56rem; margin: auto; background: #fff; border-radius: 0.5rem; font-family: Arial, sans-serif; color: #1f2937;">
         <div style="text-align: center; margin-bottom: 1.5rem;">
           <h1 style="font-size: 2rem; font-weight: 900; color: #111;">${name}</h1>
           <p style="font-size: 0.875rem; color: #6b7280;">${phone} | ${email} | ${city}</p>
@@ -169,10 +169,11 @@ document.addEventListener("DOMContentLoaded", function () {
               ${skills.map(skill => `<li>${skill}</li>`).join('')}
           </ul>
         </section>
-        <section class="experience" style="margin-bottom: 1.5rem;">
-        <h2 style="font-size: 1rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
-        ${experienceSection}
+        <section class="experience">
+          <h2 style="font-size: 1rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">PROFESSIONAL EXPERIENCE</h2>
+          ${experienceSection}
         </section>
+        <br>
         <section class="education" style="margin-bottom: 1.5rem;">
           <h2 style="font-size: 1 rem; font-weight: 700; background: #e5e7eb; padding: 1.5px; color: #1f2937; letter-spacing: 1px;">EDUCATION</h2>
           <p style="padding-top: 15px; font-size: 0.9rem; font-weight: 700; "> ${degree}, ${edinstitution} </p> <p style="font-size: 0.875rem; color: #4b5563; font-style: italic"> (${edstart} - ${edend}) </p>
