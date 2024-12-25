@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const removeExp = document.getElementById('removeExp');
     const minExp = 1;
     const maxExp = 4;
+    const minEd = 1;
+    const maxEd = 4;
+    const educationSection = document.getElementById('educationSection');
+    const addEducationButton = document.getElementById('addEdButton');
+    const removeEducationButton = document.getElementById('removeEd');
     addSkillButton.addEventListener("click", function (event) {
       event.preventDefault(); 
       const currentSkillsCount = skillsSection.querySelectorAll("input").length;
@@ -33,6 +38,49 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         skillsSection.removeChild(skillsSection.lastChild);
+    });
+    addEducationButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        const currentEducationCount = educationSection.querySelectorAll('input[id^="edinstitution"]').length;
+        if (currentEducationCount >= maxEd) {
+            alert("You cannot add more than 4 educations.");
+            return;
+        }
+        const edCount = currentEducationCount + 1;
+        const newEd = document.createElement("div");
+        newEd.className = "grid grid-cols-1 md:grid-cols-2 gap-6 pt-5";
+        newEd.innerHTML = `
+        <div class="flex flex-col gap-5">
+            <label for="institution" class="block text-gray-700 text-sm font-medium font-raleway">Institution</label>
+            <input type="text" id="edinstitution${edCount}" name="institution"  class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="XYZ University">
+        </div>
+        <div class="flex flex-col gap-5">
+            <label for="degree" class="block text-gray-700 text-sm font-medium font-raleway">Degree</label>
+            <input type="text" id="degree${edCount}" name="degree"  class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Bachelor's Degree">
+        </div>
+        <div class="flex flex-col gap-5">
+            <label for="start2" class="block text-gray-700 text-sm font-medium font-raleway">Start Date</label>
+            <input type="text" id="ed-start${edCount}" name="start"  class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Jan 2024">
+        </div>
+        <div class="flex flex-col gap-5">
+            <label for="end2" class="block text-gray-700 text-sm font-medium font-raleway">End Date</label>
+            <input type="text" id="ed-end${edCount}" name="end" class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Present">
+        </div>
+        <div class="flex flex-col gap-5">
+            <label for="percentage" class="block text-gray-700 text-sm font-medium font-raleway">Percentage</label>
+            <input type="text" id="ed-percentage${edCount}" name="percentage1"  class="w-full p-3 md:p-4 bg-purple-50 border-2 border-black focus:outline-violet-500 sm:text-sm" placeholder="Computer Science">
+        </div> 
+        `;
+        educationSection.appendChild(newEd);
+    });
+    removeEducationButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        const currentEducationCount = educationSection.querySelectorAll('input[id^="edinstitution"]').length;
+        if (currentEducationCount <= minEd) {
+            alert("You cannot remove less than 1 educations.");
+            return;
+        }
+        educationSection.removeChild(educationSection.lastChild);
     });
     addExp.addEventListener("click", function (event) {
         event.preventDefault();
@@ -99,21 +147,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 description: description,
             };
         });
-        const edinstitution = document.getElementById('ed-institution').value;
-        const degree = document.getElementById('degree').value;
-        const edstart = document.getElementById('ed-start').value;
-        const edend = document.getElementById('ed-end').value;
-        const edpercentage = document.getElementById('ed-percentage').value;
-        const edinstitution1 = document.getElementById('ed-institution-1').value;
-        const edstart1 = document.getElementById('ed-start1').value;
-        const edend1 = document.getElementById('ed-end1').value;
-        const edpercentage1 = document.getElementById('ed-percentage-1').value;
+        const education = Array.from(document.querySelectorAll('input[id^="edinstitution"]')).map((edInput, index) => {
+            const institution = document.getElementById(`edinstitution${index + 1}`)?.value || '';
+            const degree = document.getElementById(`degree${index + 1}`)?.value || '';
+            const start = document.getElementById(`ed-start${index + 1}`)?.value || '';
+            const end = document.getElementById(`ed-end${index + 1}`)?.value || '';
+            const percentage = document.getElementById(`ed-percentage${index + 1}`)?.value || '';
+            return {
+                institution: institution,
+                degree: degree,
+                start: start,
+                end: end,
+                percentage: percentage,
+            };
+        });
         const summary = document.getElementById('summary').value;
         const certifications = document.getElementById('certifications').value;
         const languages = document.getElementById('languages').value;
         const extracurricular = document.getElementById('extra-curricular').value;
         const firstExperience = experiences[0] || {};
-        if (!name || !email || !phone || !city || skills.length < minSkill || !firstExperience.company || !firstExperience.position || !edinstitution || !edstart1 || !edend1 || !edpercentage1 || !degree || !edstart || !edend || !edpercentage || !summary || !edinstitution1 || !edstart1 || !edend1 || !edpercentage1) {
+        const firstEducation = education[0] || {};
+        if (!name || !email || !phone || !city || skills.length < minSkill || 
+            !firstExperience.company || !firstExperience.position || 
+            !firstEducation.institution || !firstEducation.start || 
+            !firstEducation.end || !firstEducation.percentage || 
+            !summary) {
             alert("Please fill out all the required fields before downloading the resume.");
             return;
         }
@@ -126,6 +184,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <p><span style="font-weight: 700;">${exp.position}</span>, ${exp.company}</p>
                 <p style="font-style: italic;">${exp.start} to ${exp.end}</p>
                 <p>${exp.description}</p>
+            </div>
+        `).join('');
+        const educationSection = education.map(ed => `
+            <div style="color: #4b5563; margin-bottom: 1rem;">
+                <p><span style="font-weight: 700;">${ed.degree}</span>, ${ed.institution}</p>
+                <p style="font-style: italic;">${ed.start} to ${ed.end}</p>
+                <p>${ed.percentage}%</p>
             </div>
         `).join('');
         const additionalInfoSection = languages || certifications || extracurricular
@@ -164,16 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <!-- Educational Background -->
                         <div style="margin-bottom: 1.5rem;">
                             <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Educational Background</h2>
-                            <div style="color: #4b5563;">
-                                <p><span style="font-weight: 700;">${degree}</span></p>
-                                <p>${edinstitution}</p>
-                                <p>${edstart} - ${edend}</p>
-                                <p>Percentage: ${edpercentage1}</p>
-                                <br>
-                                <p><span style="font-weight: 700;">${edinstitution}</span></p>
-                                <p>${edstart1} - ${edend1}</p>
-                                <p>Percentage: ${edpercentage1}</p>
-                            </div>
+                            ${educationSection}
                         </div>
         
                         <!-- Skills & Proficiencies -->
